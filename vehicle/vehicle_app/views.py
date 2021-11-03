@@ -20,8 +20,7 @@ class Vehicle:
                         'id': item.id
                     })
             except:
-                return render(self, 'error/error500.html', {'Status': False,
-                                                            'Message': 'Something went wrong!...'})
+                return render(self, 'vehicle/index.html', {'nav': 'home'})
             if global_messages:
                 messages = [global_messages.pop()]
             else:

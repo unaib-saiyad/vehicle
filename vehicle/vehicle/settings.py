@@ -73,9 +73,17 @@ WSGI_APPLICATION = 'vehicle.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'daltbbkrnen364',
+        'USER': 'llfygiecpyurom',
+        'PASSWORD': '9da3706fc1179d2d12989e156afd5731b7a1ad3a8a0450cc5d17fcf8a82e3702',
+        'HOST': 'ec2-44-199-158-170.compute-1.amazonaws.com',
+        'PORT': 5432,
     }
 }
 
