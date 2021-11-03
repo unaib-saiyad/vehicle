@@ -1,0 +1,99 @@
+{% extends "vehicle/base.html" %}
+
+{% load static %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+<div class="content-wrapper">
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-{{message.type}} alert-dismissible fade show" role="alert">
+    <strong>{{message.status}}</strong>{{message.message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+  {% endif %}
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2 justify-content-center">
+        <div class="col-sm-6 text-center">
+          <h1>Vehicle list</h1>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title m-2">List of vehicles:</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+              {% if objects %}
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Average speed</th>
+                    <th>Fuel level</th>
+                    <th>Temprature</th>
+                    <th>Opration</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for obj in objects %}
+                  <tr style="cursor: pointer;" onclick="redirect('status/','{{obj.id}}')">
+                    <td>{{forloop.counter}}</td>
+                    <td>{{obj.avg_speed}} km/hr</td>
+                    <td>{{obj.fuel_level}} Liter</td>
+                    <td><span class="tag tag-success">{{obj.temperature}} C</span></td>
+                    <td class="d-flex">
+                      {% with id=obj.id %}
+                      <form action="update/{{id}}/" method="get">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary mx-2">Update</button>
+                      </form>
+                      <form action="delete/{{id}}/" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger mx-2">Delete</button>
+                      </form>
+                      {% endwith %}
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              {% else %}
+              <h3>No Vehicle Status</h3>
+              {% endif %}
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+  function redirect(towards, id) {
+    console.log(towards, id);
+    window.open(window.location.href + towards + id, '_self');
+  }
+</script>
+{% endblock %}

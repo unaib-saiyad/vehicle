@@ -1,0 +1,126 @@
+{% extends "vehicle/base.html" %}
+
+{% load static %}
+
+{% block title %}Update-add{% endblock %}
+
+{% block style %}
+<style>
+  #map {
+    width: 700px;
+    height: 500px;
+  }
+</style>
+{% endblock %}
+
+{% block headscript %}
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3"></script>
+{% endblock %}
+
+{% block body %}
+<div class="content-wrapper mt-3">
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-{{message.type}} alert-dismissible fade show" role="alert">
+    <strong>{{message.status}}</strong>{{message.message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+  {% endif %}
+  <div class="container" style="width: 75%;">
+    <!-- general form elements -->
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Add or update</h3>
+      </div>
+      <!-- /.card-header -->
+      {% if credentials %}
+      {% with id=credentials.id %}
+      <form action="" method="post">
+      {% endwith %}
+      {% else %}
+      <form action="{% url 'add' %}" method="post">
+      {% endif %}
+        {% csrf_token %}
+        <div class="card-body">
+          <div class="form-group">
+            <label for="speedOfVehicle">Speed of the vehicle:</label>
+            <input name="speed" type="number" class="form-control form-control-border" id="speedOfVehicle"
+              value="{{credentials.speed}}" placeholder="Speed of the vehicle..." required>
+          </div>
+          <div class="form-group">
+            <label for="averageSpeedOfVehicle">Average Speed:</label>
+            <input name="avg-speed" type="number" class="form-control form-control-border border-width-2" id="averageSpeedOfVehicle"
+              value="{{credentials.avg_speed}}" placeholder="Average speed of the vehicle..."  required>
+          </div>
+          <div class="form-group">
+            <label for="tempratureOfVehicle">Temprature:</label>
+            <input name="temperature" type="number" class="form-control form-control-border border-width-2" id="tempratureOfVehicle"
+            value="{{credentials.temperature}}" placeholder="Temperature of the vehicle..." required>
+          </div>
+          <div class="form-group">
+            <label for="fuelLevelOfVehicle">Fuel level:</label>
+            <input name="fuel-level" type="number" class="form-control form-control-border border-width-2" id="fuelLevelOfVehicle"
+            value="{{credentials.fuel_level}}" placeholder="Fuel level of the vehicle..." required>
+          </div>
+          <h3 class="h2">Engine Status:</h3>
+          <div class="form-group d-flex flex-column">
+            <label for="leekage">Engine Leekage Status:</label>
+            <select name="leakage" class="form-select form-select-sm" id="leekage" aria-label=".form-select-sm example" required>
+              {% if credentials.engine_status.leakage == "False" %}
+              <option selected value="False">Leekaged</option>
+              <option value="True">No leekages</option>
+              {% else %}
+              <option selected value="True">No leekages</option>
+              <option value="False">Leekaged</option>
+              {% endif %}
+            </select>
+          </div>
+          <div class="form-group d-flex flex-column">
+            <label for="oil-level">Engine Oil Level:</label>
+            <select name="oil-level" class="form-select form-select-sm" id="oil-level" aria-label=".form-select-sm example" required>
+              {% if credentials.engine_status.oil_level == "False" %}
+              <option selected value="False">Not Normal</option>
+              <option value="True">normal</option>
+              {% else %}
+              <option selected value="True">Normal</option>
+              <option value="False">Not normal</option>
+              {% endif %}
+            </select>
+          </div>
+          <div class="form-group d-flex flex-column">
+            <label for="oil-quality">Engine Oil Quality:</label>
+            <select name="oil-quality" class="form-select form-select-sm" id="oil-quality" aria-label=".form-select-sm example" required>
+              {% if credentials.engine_status.oil_quality == "False" %}
+              <option selected value="False">Not Normal</option>
+              <option value="True">normal</option>
+              {% else %}
+              <option selected value="True">Normal</option>
+              <option value="False">Not normal</option>
+              {% endif %}
+            </select>
+          </div>
+          <!--map div-->
+          <h2 class="h2">Pick Location</h2>
+          <div id="map" style="width: 100%;"></div>
+          <div class="form-group">
+            <input name="latitude" type="number" class="form-control form-control-border border-width-2" id="lat" readonly="yes"
+              value="{{credentials.latitude}}" placeholder="Latitude value..." required>
+            <input name="Longitude" type="number" class="form-control form-control-border border-width-2" id="lng" readonly="yes"
+            value="{{credentials.longitude}}" placeholder="Longitude value..." required>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/map.js' %}"></script>
+{% endblock %}

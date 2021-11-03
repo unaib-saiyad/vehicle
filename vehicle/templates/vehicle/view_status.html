@@ -1,0 +1,116 @@
+{% extends "vehicle/base.html" %}
+
+{% load static %}
+
+{% block title %}Status{% endblock %}
+
+{% block body %}
+<div class="content-wrapper">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert alert-{{message.type}} alert-dismissible fade show" role="alert">
+        <strong>{{message.status}}</strong>{{message.message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <!-- Content Header (Page header) -->
+    <div class="mb-2 d-flex justify-content-around flex-wrap">
+        <div class="col-sm-4 d-flex justify-content-center my-2">
+            <img src="{% static 'assets/images/logo2.png' %}" alt="Logo" width="25%"
+                class="img-fluid img-circle img-thumbnail" style="opacity: .9">
+        </div>
+        <div class="col-sm-4 d-flex justify-content-center align-items-center my-2">
+            <button class="btn btn-dark mx-2 px-2 py-2">Camera1</button>
+            <button class="btn btn-dark mx-2 px-2 py-2">Camera2</button>
+        </div>
+        <div class="col-sm-4 d-flex align-items-center justify-content-center my-2">
+            <button class="btn btn-success mx-2 px-4 py-2">ON</button>
+            <button class="btn btn-danger mx-2 px-4 py-2">OFF</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-8 d-flex justify-content-center my-2">
+                <iframe
+                    src="https://maps.google.com/maps?q={{credential.latitude}}, {{credential.longitude}}&z=15&output=embed"
+                    width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div class="col-sm-4 d-flex flex-column justify-content-around align-items-center my-2">
+                <div class="row">
+                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Speed</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Speed of the vehicle</h5>
+                            <p class="card-text">The speed of the car is <b>{{credential.speed}}</b> kilometer/hour.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="card text-white bg-dark mb-3" style="max-width: 18rem;">
+                        <div class="card-header">Average-Speed</div>
+                        <div class="card-body">
+                            <h5 class="card-title">Average speed of the vehicle</h5>
+                            <p class="card-text">The Average speed of the vehicle is <b>{{credential.avg_speed}}</b>
+                                kilometer/hour.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm d-flex justify-content-center my-2">
+                <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Engine-Status</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Engine-Status of the vehicle</h5>
+                        <p class="card-text">
+                            The Engine-Status of the vehicle is: <br>
+                            {% if credential.engine_status.leakage == 'True' %}
+                            Leakage: <b>Non Leakaged</b>
+                            {% else %}
+                            Leakage: <b>Leakaged</b>
+                            {% endif %}
+                            <br>
+                            {% if credential.engine_status.oil_level == 'True' %}
+                            Oil-Level: <b>Normal</b>
+                            {% else %}
+                            Oil-Level: <b>Not Normal</b>
+                            {% endif %}
+                            <br>
+                            {% if credential.engine_status.oil_quality == 'True' %}
+                            Oil-Quality: <b>Normal</b>
+                            {% else %}
+                            Oil-Quality: <b>Not Normal</b>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm d-flex justify-content-center my-2">
+                <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Fuel-Level</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Fuel level of the vehicle</h5>
+                        <p class="card-text">Fuel level of the vehicle is: <b>{{credential.fuel_level}}</b> Liters.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm d-flex justify-content-center my-2">
+                <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Temperature</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Temperature of the vehicle</h5>
+                        <p class="card-text">Temperature of the vehicle is: <b>{{credential.temperature}}</b> degree
+                            Celsius.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
